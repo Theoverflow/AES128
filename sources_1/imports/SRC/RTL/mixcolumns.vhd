@@ -51,10 +51,10 @@ architecture mixcolumns_arch of mixcolumns is
 				col_i => col3_in_s,
 				col_o => col3_out_s);
 			
-		mixcol_o <= (col0_out_s(0), col1_out_s(0), col2_out_s(0), col3_out_s(0)),
+		mixcol_o <= ((col0_out_s(0), col1_out_s(0), col2_out_s(0), col3_out_s(0)),
 					(col0_out_s(1), col1_out_s(1), col2_out_s(1), col3_out_s(1)),
 					(col0_out_s(2), col1_out_s(2), col2_out_s(2), col3_out_s(2)),
-					(col0_out_s(3), col1_out_s(3), col2_out_s(3), col3_out_s(3));
+					(col0_out_s(3), col1_out_s(3), col2_out_s(3), col3_out_s(3)));
 
 end mixcolumns_arch;
 		

@@ -5,8 +5,6 @@ use ieee.numeric_std.all;
 library lib_aes;
 use lib_aes.crypt_pack.all;
 
-library lib_rtl;
-
 entity conv_bit128_to_typestate is
     port(
         b128_i : in bit128;

@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 library LIB_AES;
 use LIB_AES.crypt_pack.all;
-library LIB_RTL;
+
 
 entity AES is
   port(clock_i	: in  std_logic;
@@ -20,17 +20,17 @@ architecture AES_arch of AES is
   component KeyExpansion_I_O
     port (key_i		  : in	bit128;
 	  clock_i	  : in	std_logic;
-	  reset_i	  : in	std_logic;
+	  resetb_i	  : in	std_logic;
 	  start_i	  : in	std_logic;
-	  expansion_key_o : out bit128);
+	  expansionkey_o : out bit128);
 
   end component;
   component Counter is
     port (
-      reset_i  : in  std_logic;
+      resetb_i  : in  std_logic;
       enable_i : in  std_logic;
       clock_i  : in  std_logic;
-      count_o  : out bit4);
+      counter_o  : out bit4);
   end component Counter;
 
   component FSM_AES
@@ -81,9 +81,9 @@ begin
   U0 : KeyExpansion_I_O
     port map(key_i	     => key_i,
 	     clock_i	     => clock_i,
-	     reset_i	     => reset_keyexpander_s,
+	     resetb_i	     => reset_keyexpander_s,
 	     start_i	     => start_keyexpander_s,
-	     expansion_key_o => outputKeyExpander_s);
+	     expansionkey_o => outputKeyExpander_s);
 
   U1 : FSM_AES
     port map(
@@ -102,10 +102,10 @@ begin
 
   Counter_1 : Counter
     port map (
-      reset_i  => reset_counter_aes_s,
+      resetb_i  => reset_counter_aes_s,
       enable_i => enable_counter_aes_s,
       clock_i  => clock_i,
-      count_o  => counter_aes_s);
+      counter_o  => counter_aes_s);
 
   U2 : AESRound
     port map(

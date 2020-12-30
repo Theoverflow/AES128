@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 30.12.2020 18:15:40
+-- Create Date: 30.12.2020 20:03:24
 -- Design Name: 
--- Module Name: shift_rows_tb - Behavioral
+-- Module Name: mixcolumns_tb - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -34,16 +34,16 @@ use lib_aes.crypt_pack.all;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity shift_rows_tb is
+entity mixcolumns_tb is
 --  Port ( );
-end shift_rows_tb;
+end mixcolumns_tb;
 
-architecture Behavioral of shift_rows_tb is
+architecture Behavioral of mixcolumns_tb is
 
-component shift_rows
+component mixcolumns
     port(
-		sr_i : in type_state;
-		sr_o : out type_state);
+        mixcol_i : in type_state;
+		mixcol_o : out type_state);
 end component;
 
 component conv_bit128_to_typestate is
@@ -52,35 +52,16 @@ component conv_bit128_to_typestate is
         ts_o : out type_state);
 end component;
 
-component conv_typestate_to_bit128
-    port(
-        ts_i : in type_state;
-        b128_o : out bit128);
-	end component;
-
-signal sr_o_s : type_state;
 signal b128_i_s : bit128 := x"9f19107b4c81a8aaa6ac07ddf8d7c88e";
-signal b128_o_s : type_state;
-signal ts_o_s : bit128;
+signal ts_o_s : type_state;
+signal mc_o_s : type_state;
 
 begin
 
-    DUT0:conv_bit128_to_typestate
-        port map(
-         b128_i => b128_i_s,
-         ts_o => b128_o_s
-        );
+DUT0:conv_bit128_to_typestate
+    port map(b128_i => b128_i_s, ts_o => ts_o_s);
     
-    DUT1:shift_rows
-        port map(
-         sr_i => b128_o_s,
-         sr_o => sr_o_s
-        );
-        
-    DUT2:conv_typestate_to_bit128
-        port map(
-         ts_i => sr_o_s,
-         b128_o => ts_o_s
-        );
+DUT1:mixcolumns
+    port map(mixcol_i => ts_o_s, mixcol_o => mc_o_s);
 
 end Behavioral;

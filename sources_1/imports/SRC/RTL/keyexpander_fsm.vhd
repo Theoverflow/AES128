@@ -12,7 +12,7 @@ entity keyexpander_fsm is
         resetb_i : in std_logic;
         counter_i : in bit4;
         enable_o : out std_logic;
-        resetb_o : out std_logic);
+        reset_o : out std_logic);
 end keyexpander_fsm;
 
 
@@ -65,13 +65,13 @@ architecture keyexpander_fsm_arch of keyexpander_fsm is
 			case etat_present is
 				when init =>
 					enable_o <= '0';
-					resetb_o <= '0';
+					reset_o <= '0';
 				when count =>
 					enable_o <= '1';
-					resetb_o <= '1'; --reset inactif à l'état haut
+					reset_o <= '1'; --reset inactif à l'état haut
 				when stop =>
 					enable_o <= '0';
-					resetb_o <= '1';
+					reset_o <= '1';
 				
 				when others => --?
 			end case;

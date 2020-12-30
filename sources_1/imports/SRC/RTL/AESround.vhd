@@ -8,7 +8,7 @@ use lib_aes.crypt_pack.all;
 entity aesround is
 	port(
 		enablemixcolumns_i : in std_logic;
-		current_key : in bit128;
+		currentkey_i : in bit128;
 		enableroundcomputing_i : in std_logic;
 		clock_i : in std_logic;
 		resetb_i : in std_logic;
@@ -49,13 +49,13 @@ architecture aesround_arch of aesround is
 			q_o : out type_state);
 	end component;
 
-	component conv_b128_to_typestate is
+	component conv_bit128_to_typestate is
 		port(
 			b128_i : in bit128;
         	ts_o : out type_state);
 	end component;
 
-	component conv_typestate_to_b128 is
+	component conv_typestate_to_bit128 is
 		port(
 			ts_i : in type_state;
 			b128_o : out bit128);
@@ -72,17 +72,17 @@ architecture aesround_arch of aesround is
 	signal text_s : type_state;
 	
 	begin
-		conv_b128_to_typestate_text : conv_b128_to_typestate
+		conv_b128_to_typestate_text : conv_bit128_to_typestate
 			port map(
 				b128_i => text_i,
 				ts_o => text_s);
 
-		conv_b128_to_typestate_key : conv_b128_to_typestate
+		conv_b128_to_typestate_key : conv_bit128_to_typestate
 			port map(
-				b128_i => current_key,
+				b128_i => currentkey_i,
 				ts_o => currentkey_s);
 		
-		input_addroundkey_s <= output_mux_mc_s when enableroundcomputing_i = '0' else text_s;--MUX avant le bloc AddRoundKey permettant de distinguer le premier tour
+		input_addroundkey_s <= text_s when enableroundcomputing_i = '0' else output_mux_mc_s;--MUX avant le bloc AddRoundKey permettant de distinguer le premier tour
 
 		addroundkey0 : addroundkey
 		port map(
@@ -97,7 +97,7 @@ architecture aesround_arch of aesround is
 			d_i => output_addroundkey_s,
 			q_o => output_register_s);
 
-		conv_typestate_to_b128_output : conv_typestate_to_b128
+		conv_typestate_to_b128_output : conv_typestate_to_bit128
 		port map(
 			ts_i => output_register_s,
 			b128_o => data_o);
