@@ -56,7 +56,8 @@ architecture keyexpander_fsm_arch of keyexpander_fsm is
 					else
 						etat_futur <= init;
 					end if;
-				when others => -- rajouter quoi ?
+				when others => 
+					etat_futur <= init;
 			end case;
 		end process comb0;
 			
@@ -73,7 +74,7 @@ architecture keyexpander_fsm_arch of keyexpander_fsm is
 					enable_o <= '0';
 					reset_o <= '1';
 				
-				when others => --?
+				
 			end case;
 		end process comb1;
 
